@@ -125,7 +125,7 @@ resource "aws_instance" "my_private_instance" {
 
 # Load Balancers
 resource "aws_lb" "my_app_alb" {
-  name               = "my-app-alb"
+  name               = "my-app-alb-unique"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.my_public_sg.id]
@@ -133,7 +133,7 @@ resource "aws_lb" "my_app_alb" {
 }
 
 resource "aws_lb" "my_app_nlb" {
-  name               = "my-app-nlb"
+  name               = "my-app-nlb-unique"
   internal           = true
   load_balancer_type = "network"
   subnets            = [aws_subnet.my_private_subnet.id]
@@ -141,7 +141,7 @@ resource "aws_lb" "my_app_nlb" {
 
 # Target Group for Application Load Balancer
 resource "aws_lb_target_group" "my_alb_target_group" {
-  name        = "my-alb-tg"
+  name        = "my-alb-tg-unique"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.my_app_vpc.id
@@ -168,7 +168,7 @@ resource "aws_autoscaling_attachment" "my_asg_alb_attachment" {
 
 # Target Group for Network Load Balancer
 resource "aws_lb_target_group" "my_nlb_target_group" {
-  name        = "my-nlb-tg"
+  name        = "my-nlb-tg-unique"
   port        = 80
   protocol    = "TCP"
   vpc_id      = aws_vpc.my_app_vpc.id
@@ -196,7 +196,7 @@ resource "aws_lb_target_group_attachment" "my_nlb_instance_attachment" {
 
 # S3 Bucket
 resource "aws_s3_bucket" "my_app_bucket" {
-  bucket = "my-rohit-app-bucket"
+  bucket = "my-unique-app-bucket-12345"
 }
 
 # S3 Bucket Ownership Controls
@@ -222,6 +222,7 @@ resource "aws_s3_bucket_versioning" "versioning_example" {
     status = "Enabled"
   }
 }
+
 
 resource "aws_s3_bucket_policy" "my_app_bucket_policy" {
   bucket = aws_s3_bucket.my_app_bucket.id
