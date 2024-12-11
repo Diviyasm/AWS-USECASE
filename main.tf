@@ -203,9 +203,8 @@ resource "aws_lb_target_group_attachment" "my_nlb_instance_attachment" {
 
 
 # S3 Bucket
-resource "aws_s3_bucket" "my_app_bucket_1" {
-  bucket = "my-app-bucket-1"
-  
+resource "aws_s3_bucket" "my_app_bucket" {
+  bucket = "diviya-bucket"
 }
 
 # S3 Bucket Ownership Controls
@@ -263,8 +262,8 @@ resource "aws_iam_policy" "my_bucket_access_policy" {
         Effect   = "Allow",
         Action   = ["s3:*"],
         Resource = [
-          "${aws_s3_bucket.my_app_bucket_1.arn}",
-          "${aws_s3_bucket.my_app_bucket_1.arn}/*"
+          aws_s3_bucket.my_app_bucket.arn,
+          "${aws_s3_bucket.my_app_bucket.arn}/*"
         ]
       }
     ]
