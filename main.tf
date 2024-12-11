@@ -93,7 +93,7 @@ resource "aws_security_group" "my_private_sg" {
   }
 }
 
-# Autoscaling Group
+# Launch template
 resource "aws_launch_template" "my_app_launch_template_3" {
   name          = "my-app-launch-template-3"
   instance_type = "t2.micro"
@@ -104,6 +104,7 @@ resource "aws_launch_template" "my_app_launch_template_3" {
   vpc_security_group_ids = [aws_security_group.my_public_sg.id]
 }
 
+# Autoscaling Group
 resource "aws_autoscaling_group" "my_app_asg" {
   desired_capacity     = 2
   max_size             = 3
@@ -175,7 +176,7 @@ resource "aws_lb_target_group" "my_nlb_target_group" {
   target_type = "instance"
 }
 
-# Listener for NLB
+# Listener for Network Load Balancer
 resource "aws_lb_listener" "my_nlb_listener" {
   load_balancer_arn = aws_lb.my_app_nlb.arn
   port              = 80
@@ -216,6 +217,7 @@ resource "aws_s3_bucket_acl" "my_app_bucket_acl" {
   acl    = "private"  # Apply private ACL
 }
 
+#S3 versioning
 resource "aws_s3_bucket_versioning" "versioning_example" {
   bucket = aws_s3_bucket.my_app_bucket.id
   versioning_configuration {
@@ -223,29 +225,6 @@ resource "aws_s3_bucket_versioning" "versioning_example" {
   }
 }
 
-
-resource "aws_s3_bucket_policy" "my_app_bucket_policy" {
-  bucket = aws_s3_bucket.my_app_bucket.id
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect   = "Deny",
-        Principal = "*",
-        Action   = "s3:*",
-        Resource = [
-          "${aws_s3_bucket.my_app_bucket.arn}",
-          "${aws_s3_bucket.my_app_bucket.arn}/*"
-        ],
-        Condition = {
-          Bool = {
-            "aws:SecureTransport" = false
-          }
-        }
-      }
-    ]
-  })
-}
 # IAM Role
 resource "aws_iam_role" "my_app_role" {
   name = "my_app-role"
