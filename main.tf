@@ -203,14 +203,14 @@ resource "aws_lb_target_group_attachment" "my_nlb_instance_attachment" {
 
 
 # S3 Bucket
-resource "aws_s3_bucket" "my_app_bucket" {
-  bucket = "my-app-bucket"
+resource "aws_s3_bucket" "my_app_bucket_1" {
+  bucket = "my-app-bucket-1"
   
 }
 
 # S3 Bucket Ownership Controls
 resource "aws_s3_bucket_ownership_controls" "my_app_bucket_ownership_controls" {
-  bucket = aws_s3_bucket.my_app_bucket.id
+  bucket = aws_s3_bucket.my_app_bucket_1.id
 
   rule {
     object_ownership = "BucketOwnerPreferred"  # Object ownership set to bucket owner preferred
@@ -221,13 +221,13 @@ resource "aws_s3_bucket_ownership_controls" "my_app_bucket_ownership_controls" {
 resource "aws_s3_bucket_acl" "my_app_bucket_acl" {
   depends_on = [aws_s3_bucket_ownership_controls.my_app_bucket_ownership_controls]  # Ensure ownership controls are created first
 
-  bucket = aws_s3_bucket.my_app_bucket.id
+  bucket = aws_s3_bucket.my_app_bucket_1.id
   acl    = "private"  # Apply private ACL
 }
 
 # S3 versioning
 resource "aws_s3_bucket_versioning" "versioning_bucket" {
-  bucket = aws_s3_bucket.my_app_bucket.id
+  bucket = aws_s3_bucket.my_app_bucket_1.id
   versioning_configuration {
     status = "Enabled"
   }
@@ -263,8 +263,8 @@ resource "aws_iam_policy" "my_bucket_access_policy" {
         Effect   = "Allow",
         Action   = ["s3:*"],
         Resource = [
-          "${aws_s3_bucket.my_app_bucket.arn}",
-          "${aws_s3_bucket.my_app_bucket.arn}/*"
+          "${aws_s3_bucket.my_app_bucket_1.arn}",
+          "${aws_s3_bucket.my_app_bucket_1.arn}/*"
         ]
       }
     ]
