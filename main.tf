@@ -204,7 +204,7 @@ resource "aws_lb_target_group_attachment" "my_nlb_instance_attachment" {
 
 # S3 Bucket
 resource "aws_s3_bucket" "my_app_bucket" {
-  bucket = "my-usecse-app-bucket"
+  bucket = "my-usecse-app-bucket-1"
 }
 
 # Apply private ACL
@@ -266,6 +266,6 @@ resource "aws_iam_role_policy_attachment" "my_attach_s3_policy" {
 }
 # IAM Instance Profile
 resource "aws_iam_instance_profile" "my_app_role_profile" {
-  name = "my-app-role-profile"
+  name = "my-app-role-profile-1"
   role = aws_iam_role.my_app_role.name
 }
