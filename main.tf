@@ -190,7 +190,7 @@ resource "aws_lb_listener" "my_net_listener" {
 
 # S3 Bucket
 resource "aws_s3_bucket" "my_private_bucket" {
-  bucket = "my-private-bucket"
+  bucket = "my-unique-private-bucket-12345"  # Change this to a unique name
 }
 
 resource "aws_s3_bucket_ownership_controls" "my_private_bucket_ownership_controls" {
