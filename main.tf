@@ -207,9 +207,10 @@ resource "aws_s3_bucket" "my_app_bucket" {
   bucket = "my-usecse-app-bucket"
 }
 
-resource "aws_s3_bucket_acl" "rohit_app_bucket_acl" {
+# Apply private ACL
+resource "aws_s3_bucket_acl" "my_app_bucket_acl" {
   bucket = aws_s3_bucket.my_app_bucket.id
-  acl    = "private"  # Apply private ACL
+  acl    = "private" 
 }
 
 # S3 versioning
