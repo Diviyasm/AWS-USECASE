@@ -13,12 +13,14 @@ resource "aws_subnet" "my_public_subnet_1" {
   vpc_id            = aws_vpc.my_app_vpc.id
   cidr_block        = "10.0.1.0/24"
   availability_zone = "us-west-2a"
+  map_public_ip_on_launch = true
 }
 
 resource "aws_subnet" "my_public_subnet_2" {
   vpc_id            = aws_vpc.my_app_vpc.id
   cidr_block        = "10.0.2.0/24"
   availability_zone = "us-west-2b"
+  map_public_ip_on_launch = true
 }
 
 resource "aws_subnet" "my_private_subnet" {
@@ -192,6 +194,11 @@ resource "aws_lb_target_group_attachment" "my_nlb_instance_attachment" {
 # S3 Bucket
 resource "aws_s3_bucket" "my_app_bucket" {
   bucket = "my-usecse-app-bucket-unique"
+}
+
+resource "aws_s3_bucket_acl" "my_app_bucket_acl" {
+  bucket = aws_s3_bucket.my_app_bucket.id
+  acl    = "private"  # Apply private ACL
 }
 
 # S3 versioning
