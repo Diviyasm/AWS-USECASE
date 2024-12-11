@@ -204,13 +204,25 @@ resource "aws_lb_target_group_attachment" "my_nlb_instance_attachment" {
 
 # S3 Bucket
 resource "aws_s3_bucket" "my_app_bucket" {
-  bucket = "my-usecse-app-bucket-1"
+  bucket = "my-app-bucket"
+  
 }
 
-# Apply private ACL
-resource "aws_s3_bucket_acl" "my_app_bucket_acl" {
+# S3 Bucket Ownership Controls
+resource "aws_s3_bucket_ownership_controls" "my_app_bucket_ownership_controls" {
   bucket = aws_s3_bucket.my_app_bucket.id
-  acl    = "private" 
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"  # Object ownership set to bucket owner preferred
+  }
+}
+
+# S3 Bucket ACL
+resource "aws_s3_bucket_acl" "my_app_bucket_acl" {
+  depends_on = [aws_s3_bucket_ownership_controls.my_app_bucket_ownership_controls]  # Ensure ownership controls are created first
+
+  bucket = aws_s3_bucket.my_app_bucket.id
+  acl    = "private"  # Apply private ACL
 }
 
 # S3 versioning
@@ -266,6 +278,6 @@ resource "aws_iam_role_policy_attachment" "my_attach_s3_policy" {
 }
 # IAM Instance Profile
 resource "aws_iam_instance_profile" "my_app_role_profile" {
-  name = "my-app-role-profile-1"
+  name = "my-app-role-profile-2"
   role = aws_iam_role.my_app_role.name
 }
