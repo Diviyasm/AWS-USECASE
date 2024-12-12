@@ -85,12 +85,6 @@ resource "aws_security_group" "my_private_sg" {
     protocol        = "-1"
     security_groups = [aws_security_group.my_public_sg.id]
   }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 }
 
 # Launch template
@@ -116,7 +110,7 @@ resource "aws_autoscaling_group" "my_app_asg" {
   }
 }
 
-# Single EC2 Instance
+# EC2 Instance
 resource "aws_instance" "my_private_instance" {
   ami                    = "ami-0e2c8caa4b6378d8c" 
   instance_type          = "t2.micro"
