@@ -116,6 +116,8 @@ resource "aws_instance" "my_private_instance" {
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.my_private_subnet.id
   vpc_security_group_ids = [aws_security_group.my_private_sg.id]
+
+  tags = { Name = "my_private_instance" }
 }
 
 # Load Balancers
